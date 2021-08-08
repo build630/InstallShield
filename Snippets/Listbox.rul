@@ -1,0 +1,25 @@
+STRING szFile, szDlg, svLine, szDir
+NUMBER nvFileHandle
+LIST listID
+szDialog = "ListVersions";
+szFile = "intalled_Versions.txt";
+szDir = "C:\\Temp";
+OpenFileMode (FILE_MODE_NORMAL);
+if (OpenFile (nvFileHandle, szDir, szFile) < 0) then
+MessageBox ("OpenFile failed.", SEVERE);
+abort;
+endif;
+
+listID = ListCreate(STRINGLIST);
+if (listID = LIST_NULL) then
+MessageBox ("Unable to create list.", SEVERE);
+abort;
+endif;
+
+while GetLine (nvFileHandle, svLine) = 0
+ListAddString (listID, svLine, AFTER);
+endwhile;
+
+nResult = CtrlSetList (szDlg, LISTBOX, listID);
+
+ListDestroy (listID);
